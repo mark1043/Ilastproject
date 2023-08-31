@@ -1,0 +1,49 @@
+{% load static %}
+
+<style>
+  .gallery-header {
+    background-image: url('{% static "img/background_image.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 0; /* 上下の余白を削除 */
+    height: 400px; /* 高さを400pxに指定 */
+    position: relative; /* 相対的な位置指定 */
+  }
+
+  .buttons-container {
+    position: absolute; /* 絶対位置指定 */
+    bottom: 20px; /* 下側からの位置 */
+    left: 50%; /* 中央からの位置 */
+    transform: translateX(-50%); /* 横方向中央揃え */
+    display: flex; /* ボタンを横並びに配置 */
+  }
+
+  .buttons-container a {
+    margin: 0 5px; /* ボタンの間隔を調整 */
+  }
+</style>
+
+<form method="GET" action="{% url 'ilast:search_results' %}">
+  {{ form }}
+  <button type="submit">検索</button>
+</form>
+
+<section class="py-5 text-center container gallery-header">
+  <div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <h1 class="fw-light"></h1>
+      <p class="lead text-muted"></p>
+      <div class="buttons-container"> <!-- buttons-container を追加 -->
+        {% if user.is_authenticated %}
+        <a href="{% url 'ilast:post' %}" class="btn btn-primary">投稿する</a>
+        <a href="{% url 'users:logout' %}" class="btn btn-primary">ログアウト</a>
+        {% else %}
+        <a href="{% url 'users:signup' %}" class="btn btn-primary">今すぐサインアップ</a>
+        <a href="{% url 'users:login' %}" class="btn btn-primary">登録済みの方はログイン</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+

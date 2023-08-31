@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block contents %}
+  <h1>検索</h1>
+  <form method="GET">
+    {{ form }}
+    <button type="submit">検索</button>
+  </form>
+  
+  <h2>検索結果</h2>
+  <ul>
+    {% for result in results %}
+      <li>
+        <a href="{% url 'ilast:ilast_detail' result.pk %}">{{ result.title }}</a>
+        <img src="{{ result.image1.url }}" alt="{{ result.title }}" width="200" height="150">
+      </li>
+    {% empty %}
+      <li>検索結果がありません</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+
