@@ -7,6 +7,7 @@
         <br>
         <div style="text-align:center">
           <h4>{{user.username}}さんのマイページ</h4>
+          <p><a class="item" href="{% url 'users:profile' %}">ユーザー情報</a></p>
           {% if object_list.count == 0 %}
             <p>{{user.username}}さんの投稿はありません</p>
           {% else %}

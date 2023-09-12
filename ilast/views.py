@@ -12,8 +12,9 @@ from django.views.generic import DeleteView
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from .models import IlastoPost
+from django.db.models import Q
 from .forms import SearchForm
-
+from django.contrib.auth.decorators import login_required
 
 
 class IndexView(ListView):
@@ -96,12 +97,29 @@ class IlastEditView(UpdateView):
     template_name = 'ilast_edit.html'  # 画像の編集画面のテンプレート
     success_url = reverse_lazy('ilast:top')  # 編集完了後のリダイレクト先
 
-def search_view(request):
+def search(request):
     form = SearchForm(request.GET)
     results = []
 
     if form.is_valid():
-        query = form.cleaned_data['query']
-        results = IlastoPost.objects.filter(title__icontains=query)
+        query = form.cleaned_data.get('query')
+        tags = form.cleaned_data.get('tags')
+        category = form.cleaned_data.get('category')
+        uniformcolor = form.cleaned_data.get('uniformcolor')
 
-    return render(request, 'search_results.html', {'form': form, 'results': results})
+        results = IlastoPost.objects.all()
+
+        if query:
+            results = results.filter(Q(title__icontains=query) | Q(comment__icontains=query))
+
+        if tags:
+            results = results.filter(tags__name__in=tags)
+
+        if category:
+            results = results.filter(category=category)
+
+        if uniformcolor:
+            results = results.filter(uniformcolor=uniformcolor)
+
+    context = {'form': form, 'results': results}
+    return render(request, 'search_results.html', context)

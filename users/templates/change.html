@@ -1,0 +1,24 @@
+{% block title %} {% endblock %}
+{% block content %}
+<div class="ui grid stackable">
+    <div class="eleven wide column">
+        <div class="ui breadcrumb">
+            <i class="right angle icon divider"></i>
+            <div class="active section"></div>
+        </div>
+        <div class="ui segment">
+            <div class="content">
+                <div class="header"><h3>ユーザー情報の変更</h3></div>
+                <form class="ui form" action="" method="POST">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <li><a href="{% url 'password_reset' %}"
+                        class="text-white">パスワードの変更</a></li>
+                    <button class="ui orange button" type="submit">確認</button>
+                </form>
+            </div>
+        </div>
+        <a href="{% url 'users:profile' %}">プロフィールに戻る</a>
+    </div>
+</div>
+{% endblock %}

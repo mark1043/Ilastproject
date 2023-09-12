@@ -6,7 +6,7 @@
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">保存</button>
   </form>
   <a href="{% url 'ilast:top' %}" class="btn btn-secondary">Cancel</a>
 {% endblock %}

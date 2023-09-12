@@ -8,7 +8,7 @@ urlpatterns = [
      path('signup/',
          views.SignUpView.as_view(),
          name='signup'),
-    path('signup_success/',
+     path('signup_success/',
          views.SignUpSuccessView.as_view(),
          name='signup_success'),
      path('login/',
@@ -19,6 +19,6 @@ urlpatterns = [
           auth_views.LogoutView.as_view(template_name='logout.html'),
           name='logout'
           ),
-
+     path('profile/', views.UserProfileView.as_view(), name="profile"),
+     path('change/', views.UserChangeView.as_view(), name="change"),
 ]
-from django.contrib.auth import views as auth_views
