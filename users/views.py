@@ -1,21 +1,21 @@
+from typing import Any, Optional
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, TemplateView, FormView
 from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.views import PasswordContextMixin, SetPasswordForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
+from django.contrib.auth.views import PasswordContextMixin
 from django.views import View
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import AbstractBaseUser
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from typing import Any
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
-    
+
     def get_queryset(self):
         return User.objects.get(id=self.request.user.id)
 
@@ -34,17 +34,18 @@ class SignUpSuccessView(TemplateView):
 
 class UserChangeView(LoginRequiredMixin, FormView):
     template_name = 'change.html'
-    form_class = CustomUserChangeForm 
+    form_class = CustomUserChangeForm
     success_url = reverse_lazy('users:profile')
-    
+
     def form_valid(self, form):
-        form.save()  
+        form.save()
         return super().form_valid(form)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'instance': self.request.user, 
+            'instance': self.request.user,
+            })
         return kwargs
 
 class PasswordResetConfirmView(PasswordContextMixin, FormView):
@@ -56,11 +57,11 @@ class PasswordResetConfirmView(PasswordContextMixin, FormView):
     token_generator: Any = default_token_generator
     validlink: bool = True
     user: Any = None
-    
-    def get_user(self, uidb64: str) -> AbstractBaseUser | None:
+
+    def get_user(self, uidb64: str) -> Optional[AbstractBaseUser]:
         try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = MyUser._default_manager.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, MyUser.DoesNotExist):
             user = None
         return user
