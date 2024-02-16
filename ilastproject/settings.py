@@ -17,10 +17,9 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 from django.core.management.utils import get_random_secret_key
-SECRET_KEY = get_random_secret_key()  
+SECRET_KEY = get_random_secret_key()
 
 DEBUG = False
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -121,7 +120,7 @@ EMAIL_USE_TLS = True
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
-ALLOWED_HOSTS = ['localhost', '.pythonanywhere.com', 'dackelmark.pythonanywhere.com']
-
+ALLOWED_HOSTS = ['dackelmark.pythonanywhere.com']
+CSRF_TRUSTED_ORIGINS = ["https://dackelmark.pythonanywhere.com"]
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
