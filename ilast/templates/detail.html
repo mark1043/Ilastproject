@@ -1,28 +1,27 @@
 {% extends 'base.html' %}
 {% block title %}ilast Detail{% endblock %}
 
-      {% block contents %}
+{% block contents %}
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 text-center"> <!-- 中央に配置するためのクラスを追加 -->
+      <h2>{{object.title}}</h2>
+      <p>{{object.comment}}</p>
       <br>
-      <div class="container">
-        <div class="row">
-          <div class="col offset-3">
-            <h2>{{object.title}}</h2>
-            <p>{{object.comment}}</p>
-            <br>
-            <p>{{object.posted_at}}に投稿</p>
-            <p><img src="{{ object.image1.url }}"></img></p>
-            {% if object.image2 %}
-              <p><img src="{{ object.image2.url }}"></img></p>
-            {% endif %}
-            <p>タグ: {% for tag in object.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-            {% if request.user == object.user %}
-            <a href="{% url 'ilast:ilast_edit' object.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-            <form method="POST">
-            <a href="{% url 'ilast:ilast_delete' object.pk %}"
-               class="btn btn-primary my-2">削除する</a>
-            {% endif %}
-            
-          </dv>
-        </dv>
-      </dv>
-      {% endblock %}
+      <p>{{object.posted_at}}に投稿</p>
+      <p><img src="{{ object.image1.url }}" alt="Image 1" style="max-width: 100%; height: auto;"></p>
+      {% if object.image2 %}
+        <p><img src="{{ object.image2.url }}" alt="Image 2" style="max-width: 100%; height: auto;"></p>
+      {% endif %}
+      <p>タグ: {% for tag in object.tags.all %}{{ tag }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+      {% if request.user == object.user %}
+        <a href="{% url 'ilast:ilast_edit' object.pk %}" class="btn btn-sm btn-outline-secondary">編集する</a>
+        <form method="POST">
+          <a href="{% url 'ilast:ilast_delete' object.pk %}" class="btn btn-primary my-2">削除する</a>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
